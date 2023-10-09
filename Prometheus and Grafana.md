@@ -111,3 +111,12 @@ sum(rate(http_requests_total[5m])) by (method)
 This query will return the sum of the rate of `http_requests_total` over the last 5 minutes, grouped by the `method` label (e.g., GET, POST).
 
 Remember, these are just simple examples. PromQL is a powerful query language that supports a wide range of functions, operators, and aggregations, allowing you to construct complex queries to analyze your metrics.
+
+## Alert Manager
+**Alert Manager** is a component of Prometheus that handles alerts sent by client applications such as the Prometheus server. It takes cares of deduplicating, grouping, and routing them to the correct receiver integrations such as email, PagerDuty ..., 
+
+1. **Alerting rules in Prometheus servers**: Prometheus servers send alerts to the Alertmanager. These alerts are based on alerting rules in the Prometheus servers. When the conditions in an alerting rule are met (i.e., when certain thresholds are breached), an alert is fired to the Alertmanager.
+2. **Grouping of alerts**: Alertmanager groups received alerts by the label value in the alerts. This is useful in grouping similar alerts together, which can help in reducing the noise and focusing on the problem at hand.
+3. **Inhibition**: Alertmanager supports a concept of inhibition where an alert can mute notifications for certain other alerts if certain label sets match.
+4. **Silencing**: Alertmanager also supports manually silencing notifications for a given alert.
+5. **Sending notifications**: After deduplication, grouping, and applying inhibition and silencing, Alertmanager sends notification about the alerts to the specified receiver.
