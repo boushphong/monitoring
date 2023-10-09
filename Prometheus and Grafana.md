@@ -55,14 +55,14 @@ Sure, let's look at some examples of queries using these data types in PromQL, P
 
 A scalar represents a simple numeric floating point value. It's often used in arithmetic operations with instant vectors. For example:
 
-```promql
+```javascript
 http_requests_total > 100
 ```
 This query will return an instant vector consisting of the current values of the `http_requests_total` metric for all time series where the value is greater than 100.
 
 **Returns**: All HTTP requests that are larger than the current value of 100.
 
-```
+```javascript
 http_requests_total{method='GET' ...} 101
 http_requests_total{method='POST' ...} 311
 ```
@@ -71,7 +71,7 @@ http_requests_total{method='POST' ...} 311
 
 An instant vector consists of a set of time series containing a single sample for each time series, all sharing the same timestamp. Here's an example of a query that returns an instant vector:
 
-```promql
+```javascript
 http_requests_total
 ```
 
@@ -81,14 +81,14 @@ This query will return the current value of the `http_requests_total` metric for
 
 A range vector consists of a set of time series containing a range of data points over time for each time series. Here's an example of a query that uses a range vector:
 
-```promql
+```javascript
 rate(http_requests_total[5m])
 ```
 
 This query will return an instant vector where each value is the per-second rate of increase of the `http_requests_total` counter over the last 5 minutes.
 
 **Returns**:
-```
+```javascript
 http_requests_total{method="get", code="200"} 2.3
 http_requests_total{method="post", code="200"} 1.7
 http_requests_total{method="get", code="404"} 0.1
@@ -104,7 +104,7 @@ This means:
 
 PromQL also supports aggregation operators that can be used to aggregate the same kind of data across many different time series, based on their labels. Here's an example:
 
-```promql
+```javascript
 sum(rate(http_requests_total[5m])) by (method)
 ```
 
