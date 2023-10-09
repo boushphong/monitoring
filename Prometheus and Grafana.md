@@ -120,3 +120,32 @@ Remember, these are just simple examples. PromQL is a powerful query language th
 3. **Inhibition**: Alertmanager supports a concept of inhibition where an alert can mute notifications for certain other alerts if certain label sets match.
 4. **Silencing**: Alertmanager also supports manually silencing notifications for a given alert.
 5. **Sending notifications**: After deduplication, grouping, and applying inhibition and silencing, Alertmanager sends notification about the alerts to the specified receiver.
+
+## Exposing Metrics with Python Prometheus Client
+```python
+from prometheus_client import start_http_server, Summary, Counter
+import random
+import time
+
+# Create a metric to track time spent and requests made.
+REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
+MY_COUNTER = Counter('my_counter', 'Description of counter')
+
+
+@REQUEST_TIME.time()
+def process_request(t):
+    """A dummy function that takes some time."""
+    MY_COUNTER.inc(5)
+    time.sleep(t)
+
+
+if __name__ == '__main__':
+    # Start up the server to expose the metrics.
+    start_http_server(8000)
+
+    process_request(random.random())
+    # Generate some requests.
+    while True:
+        process_request(random.random())
+        time.sleep(3)
+```
