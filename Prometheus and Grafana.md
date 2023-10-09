@@ -7,7 +7,7 @@ Prometheus is designed as a pull-based system due to several reasons:
 - **Reliability**: If a target goes down, the monitoring system is immediately aware because it cannot pull metrics from the target. In a push-based system, the monitoring system has to infer that a target is down if it stops receiving metrics, which can lead to delays in alerting.
 - **Scalability**: You can add more targets without having to reconfigure or restart the monitoring server. This makes it easier to scale the system as your infrastructure grows.
 - **Security**: The monitored targets do not need to have access to the monitoring server. This reduces the attack surface and makes it easier to secure the system.
-- **Control over Scraping Interval**: you have control over when and how often you scrape data. This can be particularly useful when dealing with targets that can't handle high request rates.
+- **Control over Scraping Interval**: You have control over when and how often you scrape data. This can be particularly useful when dealing with targets that can't handle high request rates.
 
 While pull-based systems like Prometheus have these advantages, they also have some disadvantages. For example, they can be more challenging to use in environments with dynamic or ephemeral targets, and they require the monitoring server to be able to reach all targets, which can be difficult in complex network environments.
 
