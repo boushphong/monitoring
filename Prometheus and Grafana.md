@@ -129,13 +129,13 @@ import time
 
 # Create a metric to track time spent and requests made.
 REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
-MY_COUNTER = Counter('my_counter', 'Description of counter')
+MY_COUNTER = Counter('my_counter', 'Description of counter', ['function'])
 
 
 @REQUEST_TIME.time()
 def process_request(t):
     """A dummy function that takes some time."""
-    MY_COUNTER.inc(5)
+    MY_COUNTER.labels('process_request').inc()
     time.sleep(t)
 
 
@@ -145,7 +145,23 @@ if __name__ == '__main__':
 
     process_request(random.random())
     # Generate some requests.
-    while True:
+    while True:  # Also to run indefinitely to keep the server alive on port 8000
         process_request(random.random())
         time.sleep(3)
+```
+**Result:**
+```
+# HELP request_processing_seconds Time spent processing request
+# TYPE request_processing_seconds summary
+request_processing_seconds_count 1.0
+request_processing_seconds_sum 0.47328010000001086
+# HELP request_processing_seconds_created Time spent processing request
+# TYPE request_processing_seconds_created gauge
+request_processing_seconds_created 1.6968679443503273e+09
+# HELP my_counter_total Description of counter
+# TYPE my_counter_total counter
+my_counter_total{function="process_request"} 2.0
+# HELP my_counter_created Description of counter
+# TYPE my_counter_created gauge
+my_counter_created{function="process_request"} 1.6968679443512368e+09
 ```
