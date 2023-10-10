@@ -1,5 +1,5 @@
 # Overview
-**Prometheus** and **Grafana** is primarily a pull-based monitoring system, which means:
+**Prometheus** is primarily a pull-based monitoring system, which means:
 - It retrieves metrics by querying the monitored services or hosts at regular intervals.
 
 Prometheus is designed as a pull-based system due to several reasons:
