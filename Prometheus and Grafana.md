@@ -165,3 +165,43 @@ my_counter_total{function="process_request"} 2.0
 # TYPE my_counter_created gauge
 my_counter_created{function="process_request"} 1.6968679443512368e+09
 ```
+
+## Scraping Metrics with from a Flask App
+`main.py`
+```python
+from flask import Flask, Response
+from prometheus_client import Counter, generate_latest
+
+app = Flask(__name__)
+
+# Create a counter metric
+requests_total = Counter("requests_total", "Total number of HTTP requests.")
+
+
+@app.route('/')
+def hello_world():
+    # Increment the counter
+    requests_total.inc()
+    return 'Hello, World!'
+
+
+@app.route('/metrics')
+def metrics():
+    # Expose the metrics
+    return Response(generate_latest(), mimetype='text/plain')
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+```
+`prometheus.yml`
+```yaml
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: 'flask_app'
+    static_configs:
+      - targets: ['host.docker.internal:5000']  # Mac OS internal host
+```
