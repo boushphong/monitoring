@@ -35,7 +35,7 @@ Don't divide by 0, Mate!
 
 In this example, we define a new function `handle_exception` and assign it to `sys.excepthook`. Now, when an uncaught `ZeroDivisionError` occurs, our `handle_exception` function is called instead of the default `sys.excepthook`, and it prints out a custom error message. This is how libraries like Sentry can capture uncaught exceptions: they assign a custom function to `sys.excepthook` that sends exception details to their service.
 
-## Inspecting the Trackback
+## Inspecting the Traceback
 Here's an example:
 ```python
 import sys
