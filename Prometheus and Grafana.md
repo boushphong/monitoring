@@ -21,11 +21,6 @@ The process of connecting to an exporter and pulling their metrics into Promethe
 
 The exporter in Prometheus is typically installed and run on the same machine or in the same environment as the service you want to monitor.
 
-## Push Gateway
-When an application wants to send its metrics to Prometheus in a push-based manner, we'd need a **Push Gateway**.
-
-**Push Gateway** is a component of Prometheus, it acts as a temporary storage where applications can send their metrics to. In addition, it has a built-in exporter in it so Prometheus can pull the metrics from the exporter within the **Push Gateway**
-
 ## Configuring Prometheus
 ```yaml
 global:
@@ -204,4 +199,34 @@ scrape_configs:
   - job_name: 'flask_app'
     static_configs:
       - targets: ['host.docker.internal:5000']  # Mac OS internal host
+```
+
+## Service Discovery
+Service discovery in Prometheus works by continuously scanning for changes in your environment and updating the list of targets (i.e., instances to be monitored). This is done by querying a service discovery mechanism, which could be a cloud provider's API, a Kubernetes API server, a DNS server, or a configuration management database. There are many service discovery mechanisms, including:
+- **Static Configurations**: Manually specify the targets and parameters.
+- **DNS-Based Discovery**: Use DNS SRV records to discover target services.
+- **File-Based Discovery**: Use files (in JSON or YAML format) to specify the targets.
+- **Kubernetes**: Discover services in a Kubernetes cluster.
+- And many more ... Cloud, Consul, OpenStack ...
+
+## Push Gateway
+When an application wants to send its metrics to Prometheus in a push-based manner, we'd need a **Push Gateway**.
+
+**Push Gateway** is a component of Prometheus, it acts as a temporary storage where applications can send their metrics to. In addition, it has a built-in exporter in it so Prometheus can pull the metrics from the exporter within the **Push Gateway**
+
+**Sample code:**
+```python
+from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
+
+# Create a new registry
+registry = CollectorRegistry()
+
+# Create a new Gauge metric
+g = Gauge('job_last_success_unixtime', 'Last time a batch job successfully finished', registry=registry)
+
+# Set the Gauge to the current unixtime
+g.set_to_current_time()
+
+# Push the metric to the Pushgateway
+push_to_gateway('localhost:9091', job='batch_job', registry=registry)
 ```
