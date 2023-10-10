@@ -5,7 +5,7 @@ Python's built-in error tracking system includes:
 - **Tracebacks**: When an exception is raised, Python will print a traceback to the standard error. The traceback contains the sequence of function calls that led to the exception, which can help you identify where the error occurred.
 
 ## How do error tracking programs like Sentry work under the hood in Python?
-When you initialize Sentry using `sentry_sdk.init()`, it sets up a global error handler that can catch unhandled exceptions. This is done by hooking into the Python standard library's logging module and the built-in `sys.excepthook` function, which is called whenever an unhandled exception occurs.
+When you initialize Sentry using `sentry_sdk.init()`, it sets up a global error handler that can catch unhandled exceptions. This is done by hooking into the Python standard library's logging module and the built-in `sys.excepthook` function, which is called whenever an unhandled exception occurs. This is how libraries like Sentry can capture uncaught exceptions: they assign a custom function to `sys.excepthook` that sends exception details to their service.
 
 `sys.excepthook` is a built-in function in Python's `sys` module that allows you to handle uncaught exceptions. By default, `sys.excepthook` is called whenever an exception is not caught in a `try/except` block, and it handles the exception by printing out a traceback to `sys.stderr` and terminating the program. The default behavior of `sys.excepthook` can be overridden by assigning a new function to `sys.excepthook`. The new function should accept three arguments: the exception type, the exception value, and a traceback object. This allows you to define custom error handling for uncaught exceptions.
 
