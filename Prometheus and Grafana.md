@@ -11,6 +11,8 @@ Prometheus is designed as a pull-based system due to several reasons:
 
 While pull-based systems like Prometheus have these advantages, they also have some disadvantages. For example, they can be more challenging to use in environments with dynamic or ephemeral targets, and they require the monitoring server to be able to reach all targets, which can be difficult in complex network environments.
 
+**NOTE:** When **Prometheus** scrapes a target, it attaches a timestamp to each sample at the moment of the scrape. This timestamp is used when querying the data and for the storage of the data in the time-series database. However, it's important to note that the timestamp is not visible when you're looking at the raw metrics exposed by your service. The timestamp is added by Prometheus at the time of the scrape, and it's used internally for data storage and queries.
+
 ## Exporter
 An exporter is a service that fetches metrics from a specific source and translates them into a format that Prometheus can understand.
 - Many systems do not natively expose their metrics in a format that Prometheus can ingest. An exporter acts as a bridge between that system and Prometheus, gathering data from the system and presenting it in a way that Prometheus can scrape and store.
