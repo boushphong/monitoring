@@ -163,7 +163,7 @@ my_counter_total{function="process_request"} 2.0
 my_counter_created{function="process_request"} 1.6968679443512368e+09
 ```
 
-## Scraping Metrics with from a Flask App
+## Scraping Metrics from a Flask App
 `main.py`
 ```python
 from flask import Flask, Response
